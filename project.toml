@@ -1,0 +1,8 @@
+name = "esimv1-viewer"
+horizon = "2026"
+repo = "anselm/esimv1-viewer"
+code = "local"
+deploy = "none"
+status = "active"        # active | parked | archived
+autodeploy = false
+notes = "cut out of anselm/esimv1 on 2026-11-22; on canada1 its working clone sits inside the esimv1 folder"
