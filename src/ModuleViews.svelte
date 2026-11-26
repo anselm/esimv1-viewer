@@ -125,7 +125,7 @@
             <p class="mt-3 text-[17px] leading-relaxed muted">Nothing has happened yet.</p>
           {:else}
             <p class="mt-3 text-[17px] leading-relaxed">{sentences[0].data.sentence}</p>
-            {#each sentences.slice(1, 3) as c, i (c.t + c.topic + (c.data.id ?? i))}
+            {#each sentences.slice(1, 3) as c, i (c.t + c.topic + (c.data.id ?? '') + ':' + i)}
               <p class="mt-2 text-sm leading-relaxed muted">{c.data.sentence}</p>
             {/each}
           {/if}
@@ -163,7 +163,7 @@
 
     {#if maps.length}
       <div class="mt-5 grid gap-x-6 gap-y-6 {grid(maps.length)}">
-        {#each maps as v (v.source)}
+        {#each maps as v, mi (v.source + ':' + mi)}
           <div>
             <div class="mb-1 text-sm">{v.title}{#if v.note} <span class="muted">· {v.note}</span>{/if}</div>
             <FieldMap name={v.source} field={run.fields[v.source]} {base} {cursor} {context} />
@@ -174,7 +174,7 @@
 
     {#if counters.length && !films.length}
       <div class="mt-4 grid gap-x-6 gap-y-3 sm:grid-cols-2 lg:grid-cols-4">
-        {#each counters as v (v.source)}
+        {#each counters as v, ki (v.source + ':' + ki)}
           <div>
             <div class="mono text-2xl tabular-nums">{show(v)}</div>
             <div class="text-sm">{v.title}</div>
@@ -184,13 +184,13 @@
       </div>
     {/if}
 
-    {#each stories as v (v.title)}
+    {#each stories as v, si (v.title + ':' + si)}
       <div class="mt-5 max-w-3xl">
         {#if sentences.length === 0}
           <p class="text-sm muted">Nothing crossed yet at this point in the run.</p>
         {:else}
           <ol class="space-y-2">
-            {#each sentences.slice(0, 3) as c, i (c.t + c.topic + (c.data.iso3 ?? c.data.id ?? i))}
+            {#each sentences.slice(0, 3) as c, i (c.t + c.topic + (c.data.iso3 ?? c.data.id ?? '') + ':' + i)}
               <li class="text-[15px] leading-relaxed {i === 0 ? 'font-medium' : ''}">
                 {c.data.sentence}
                 {#if c.data.source || c.data.confidence}<span class="mono text-xs muted"> {c.data.source ?? ''}{c.data.confidence ? ` · ${c.data.confidence}` : ''}</span>{/if}
@@ -201,7 +201,7 @@
             <details class="mt-2">
               <summary class="cursor-pointer text-sm muted">{v.title} · {sentences.length - 3} earlier{#if v.note} · {v.note}{/if}</summary>
               <ol class="mt-2 space-y-2">
-                {#each sentences.slice(3) as c, i (c.t + c.topic + (c.data.iso3 ?? c.data.id ?? i))}
+                {#each sentences.slice(3) as c, i (c.t + c.topic + (c.data.iso3 ?? c.data.id ?? '') + ':' + i)}
                   <li class="text-sm leading-relaxed">{c.data.sentence}{#if c.data.source || c.data.confidence}<span class="mono text-xs muted"> {c.data.source ?? ''}{c.data.confidence ? ` · ${c.data.confidence}` : ''}</span>{/if}</li>
                 {/each}
               </ol>
@@ -213,7 +213,7 @@
 
     {#if crossViews.length}
       <div class="mt-5 grid gap-x-8 gap-y-4 lg:grid-cols-2">
-        {#each crossViews as v (v.title)}
+        {#each crossViews as v, xi (v.title + ':' + xi)}
           {@const xs = soFar(v.source)}
           <div>
             <div class="mb-1 text-sm">{v.title} <span class="mono muted">· {xs.length} so far</span>{#if v.note} <span class="muted">· {v.note}</span>{/if}</div>
@@ -238,7 +238,7 @@
       </div>
     {/if}
 
-    {#each texts as v (v.title)}
+    {#each texts as v, ti (v.title + ':' + ti)}
       <div class="mt-5 max-w-3xl">
         <div class="mb-1 text-sm">{v.title}</div>
         <p class="text-sm leading-relaxed muted">{v.source}</p>
@@ -247,7 +247,7 @@
 
     {#if charts.length}
       <div class="mt-5 grid gap-x-6 gap-y-5 sm:grid-cols-2">
-        {#each charts as v (v.source + v.obs)}
+        {#each charts as v, ci (v.source + v.obs + ':' + ci)}
           <Chart name={v.title} unit={run.series[v.source]?.unit ?? ''} points={run.series[v.source].points} t0={run.start} t1={run.end}
             obs={v.obs && run.series[v.obs] ? run.series[v.obs].points : null} obsName={v.obs || null} {cursor} {event} />
         {/each}

@@ -56,6 +56,10 @@
   .notebook :global(.nb-tabs button[aria-selected='true']) { border-bottom-color: var(--color-brand); color: var(--color-brand); opacity: 1; }
   .notebook :global(.nb-cols) { display: grid; gap: 1.5rem 2.5rem; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); align-items: start; }
   .notebook :global(.nb-wide) { max-width: none; }
+  /* shared by every run.html, so a page needs no style block of its own */
+  .notebook :global(.nb-lede) { font-size: 1.1rem; line-height: 1.6; max-width: 46rem; }
+  .notebook :global(.nb-counters) { margin: 1.25rem 0 0.5rem; }
+  .notebook :global(.nb-note) { border-left: 3px solid var(--color-brand); padding: 0.1rem 0 0.1rem 1rem; margin: 1rem 0; max-width: 46rem; }
   .notebook :global(esim-scene .absolute p) { font-size: inherit; line-height: inherit; margin: 0; }
   .notebook :global(p), .notebook :global(h1), .notebook :global(h2), .notebook :global(h3), .notebook :global(ul), .notebook :global(ol) { max-width: 46rem; }
 </style>

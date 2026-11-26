@@ -82,7 +82,7 @@
         <line x1={padL} y1={H - padB} x2={width - padR} y2={H - padB} class="stroke-neutral-300 dark:stroke-neutral-700" stroke-width="1" />
         <line x1={padL} y1={padT} x2={width - padR} y2={padT} class="stroke-neutral-200 dark:stroke-neutral-800" stroke-width="1" stroke-dasharray="2 3" />
         {#if event !== null && event >= t0 && event <= t1}<line x1={sx(event)} y1={padT} x2={sx(event)} y2={H - padB} stroke="#b3261e" stroke-width="1" stroke-dasharray="3 2" opacity="0.8" />{/if}
-        {#each ticks as t, i (t)}
+        {#each ticks as t, i (i)}
           <line x1={sx(t)} y1={H - padB} x2={sx(t)} y2={H - padB + 3} class="stroke-neutral-300 dark:stroke-neutral-700" stroke-width="1" />
           <text
             x={sx(t)} y={H - 4}

@@ -42,7 +42,7 @@ export function loadRun(path, key, fixed) {
       ctx.base = base; ctx.id = id; ctx.run = run
       const ev = (run.audit?.crossings ?? []).find((c) => c.data?.kind === 'rupture' || c.data?.kind === 'ignition')?.t ?? null
       // ?t=<unix seconds> holds the page at a moment, so a moment can be shared
-      const want = Number(new URLSearchParams(location.search).get('t'))
+      const tq = new URLSearchParams(location.search).get('t'); const want = tq === null || tq === '' ? NaN : Number(tq)   // no ?t is not t=0, which lies inside a run that spans 1970
       ctx.cursor = want >= run.start && want <= run.end ? want : ev !== null ? Math.min(run.end, ev + 7 * 86400) : run.end
     } catch (e) { ctx.error = e.message }
   })()

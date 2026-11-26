@@ -14,6 +14,7 @@
   //   <esim-wiring>                     how the modules are connected
   //   <esim-readme>                     the project's README.md
   //   <esim-run-link>text</esim-run-link>  a link to this run's full data page
+  // `optional` on a map, chart or counter draws nothing when the run lacks it (a page serves every variant).
   import Layers3D from './Layers3D.svelte'
   import Timeline from './Timeline.svelte'
   import FieldMap from './FieldMap.svelte'
@@ -52,17 +53,17 @@
 {:else if tag === 'esim-timeline'}
   {#if ctx.cursor !== null}<Timeline t0={run.start} t1={run.end} bind:cursor={ctx.cursor} autoplay={'play' in attrs} moments={ctx.moments} event={ctx.event} />{/if}
 {:else if tag === 'esim-map'}
-  {#if run.fields?.[attrs.field]}<FieldMap name={attrs.field} field={run.fields[attrs.field]} base={ctx.base} cursor={ctx.cursor} {context} />{:else}<p class="text-sm text-leak">no map frame named {attrs.field} in this run</p>{/if}
+  {#if run.fields?.[attrs.field]}<FieldMap name={attrs.field} field={run.fields[attrs.field]} base={ctx.base} cursor={ctx.cursor} {context} />{:else if !('optional' in attrs)}<p class="text-sm text-leak">no map frame named {attrs.field} in this run</p>{/if}
 {:else if tag === 'esim-chart'}
-  {#if run.series?.[attrs.series]}<Chart name={attrs.title ?? attrs.series} unit={run.series[attrs.series].unit} points={run.series[attrs.series].points} t0={run.start} t1={run.end} cursor={ctx.cursor} event={ctx.event} />{:else}<p class="text-sm text-leak">no series named {attrs.series} in this run</p>{/if}
+  {#if run.series?.[attrs.series]}<Chart name={attrs.title ?? attrs.series} unit={run.series[attrs.series].unit} points={run.series[attrs.series].points} t0={run.start} t1={run.end} cursor={ctx.cursor} event={ctx.event} />{:else if !('optional' in attrs)}<p class="text-sm text-leak">no series named {attrs.series} in this run</p>{/if}
 {:else if tag === 'esim-counter'}
-  <span class="inline-block align-top">
+  {#if !('optional' in attrs) || run.series?.[attrs.series]}<span class="inline-block align-top">
     <span class="mono block text-2xl">{show(attrs.series)}{#if attrs.unit}<span class="ml-1 text-sm muted">{attrs.unit}</span>{/if}</span>
     <span class="block text-xs muted">{attrs.label ?? attrs.series}</span>
-  </span>
+  </span>{/if}
 {:else if tag === 'esim-story'}
   <ol class="space-y-2">
-    {#each sentences as c, i (c.t + ':' + (c.data.id ?? i))}
+    {#each sentences as c, i (c.t + ':' + (c.data.id ?? '') + ':' + i)}
       <li class={i === 0 ? '' : 'muted text-sm'}>{c.data.sentence}{#if c.data.source && 'sources' in attrs}<span class="mono block text-[11px] muted">{c.data.source}{c.data.confidence ? ` · ${c.data.confidence}` : ''}</span>{/if}</li>
     {/each}
     {#if !sentences.length}<li class="muted text-sm">nothing has happened yet at {ctx.cursor === null ? '' : isoTime(ctx.cursor)}</li>{/if}
