@@ -33,11 +33,13 @@ export const DIVERGE_LUT = lut(DIVERGE)
 export const LINE = { now: [15, 118, 110], then: [150, 150, 150] }
 export const DIVERGE_CSS = `linear-gradient(to right, ${DIVERGE.join(', ')})`
 export const FIRE_CSS = `linear-gradient(to right, ${FIRE.join(', ')})`
-// Which ramp a field gets, from its name and unit: fire arrival hours warm, land-cover codes categorical, everything else blue.
+// Which ramp a field gets, from its name and unit: fire arrival hours and harm warm, land-cover codes categorical, everything else blue.
 export function rampFor(name, unit) {
   if (unit === 'worldcover code') return 'cover'
   if (/arrival|burn|fire/.test(name) && unit === 'h') return 'fire'
   if (/change|anomaly|delta/.test(name)) return 'diverge'
+  // harm reads warm everywhere, so the same place is not red on one map and blue on the next (Anselm, 2026-11-26)
+  if (/outside_niche|wetbulb_days|heatwave|death|damage|collapsed|without_power|displaced|destroyed/.test(name)) return 'fire'
   if (/_line$/.test(name) && unit === '1') return 'line'
   return 'blue'
 }

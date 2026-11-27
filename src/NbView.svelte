@@ -4,6 +4,7 @@
   // attributes say which part of the run; the run and the moment come from the shared context.
   //
   //   <esim-scene>                      the place in three dimensions, by layer
+  //   <esim-regions>                    the world's countries filled by their score at the moment
   //   <esim-timeline play>              the bar that moves the moment (play: start playing)
   //   <esim-map field="deaths">         one map frame at the moment
   //   <esim-chart series="power.share"> one series over the run
@@ -16,6 +17,7 @@
   //   <esim-run-link>text</esim-run-link>  a link to this run's full data page
   // `optional` on a map, chart or counter draws nothing when the run lacks it (a page serves every variant).
   import Layers3D from './Layers3D.svelte'
+  import RegionMap from './RegionMap.svelte'
   import Timeline from './Timeline.svelte'
   import FieldMap from './FieldMap.svelte'
   import Chart from './Chart.svelte'
@@ -50,6 +52,8 @@
   <p class="muted text-sm">loading…</p>
 {:else if tag === 'esim-scene'}
   {#if run.fields?.terrain_elev_m}<Layers3D {run} base={ctx.base} cursor={ctx.cursor} event={ctx.event} />{:else}<p class="muted text-sm">this run has no elevation frame, so there is no scene to draw</p>{/if}
+{:else if tag === 'esim-regions'}
+  <RegionMap {run} base={ctx.base} cursor={ctx.cursor} source={attrs.source ?? 'region.scored'} />
 {:else if tag === 'esim-timeline'}
   {#if ctx.cursor !== null}<Timeline t0={run.start} t1={run.end} bind:cursor={ctx.cursor} autoplay={'play' in attrs} moments={ctx.moments} event={ctx.event} />{/if}
 {:else if tag === 'esim-map'}

@@ -102,8 +102,10 @@
       const step = (W - LW - 2 * PAD) / row.length
       row.forEach((n, i) => {
         const kind = mods[idx.get(n)].kind
-        const w = Math.max(72, Math.min(step - 10, 7.2 * Math.max(n.length, kind.length * 0.86) + 18))
-        pos.set(n, { id: n, label: n, kind, ledger: false, x: PAD + step * (i + 0.5), y: PAD + r * RH + NH / 2, w, h: NH })
+        // a run made since 2026-11-26 says what each kind is in plain words; the box leads with that
+        const title = mods[idx.get(n)].title ?? ''
+        const w = Math.max(72, Math.min(step - 10, 7.2 * Math.max((title || n).length, kind.length * 0.86) + 18))
+        pos.set(n, { id: n, label: n, kind, title, ledger: false, x: PAD + step * (i + 0.5), y: PAD + r * RH + NH / 2, w, h: NH })
       })
     })
     for (const l of ledgers.values()) {
@@ -257,7 +259,7 @@
         <text x={n.x} y={n.y + 9} text-anchor="middle" dominant-baseline="middle" class="kind">{n.sub}</text>
       {:else}
         <rect x={n.x - n.w / 2} y={n.y - n.h / 2} width={n.w} height={n.h} rx="3" class="box" stroke="currentColor" stroke-width="1" />
-        <text x={n.x} y={n.y - 4} text-anchor="middle" dominant-baseline="middle" class="name">{n.id}</text>
+        <text x={n.x} y={n.y - 4} text-anchor="middle" dominant-baseline="middle" class="name"><title>{n.id}, a {n.kind}</title>{n.title || n.id}</text>
         <text x={n.x} y={n.y + 9} text-anchor="middle" dominant-baseline="middle" class="kind">{n.kind}</text>
       {/if}
     {/each}

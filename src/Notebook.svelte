@@ -49,7 +49,7 @@
 
 <style>
   .notebook { max-width: none; }
-  .notebook :global(esim-scene), .notebook :global(esim-timeline), .notebook :global(esim-map), .notebook :global(esim-chart), .notebook :global(esim-story), .notebook :global(esim-modules), .notebook :global(esim-module), .notebook :global(esim-wiring), .notebook :global(esim-readme), .notebook :global(esim-tabs) { display: block; }
+  .notebook :global(esim-scene), .notebook :global(esim-regions), .notebook :global(esim-timeline), .notebook :global(esim-map), .notebook :global(esim-chart), .notebook :global(esim-story), .notebook :global(esim-modules), .notebook :global(esim-module), .notebook :global(esim-wiring), .notebook :global(esim-readme), .notebook :global(esim-tabs) { display: block; }
   .notebook :global(esim-counter) { display: inline-block; margin: 0 1.75rem 0.75rem 0; }
   .notebook :global(.nb-tabs) { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; border-bottom: 1px solid color-mix(in srgb, currentColor 18%, transparent); margin: 1.5rem 0 1.25rem; }
   .notebook :global(.nb-tabs button) { padding: 0.5rem 0; margin-bottom: -1px; border-bottom: 2px solid transparent; font-size: 0.95rem; opacity: 0.65; }

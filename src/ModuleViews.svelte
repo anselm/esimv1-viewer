@@ -5,7 +5,7 @@
   import { isoDate, isoTime, num, relTime, eventWords } from './fmt.js'
   import FieldMap, { MARK_COLORS } from './FieldMap.svelte'
   import Scene3D from './Scene3D.svelte'
-  import Globe from './Globe.svelte'
+  import RegionMap from './RegionMap.svelte'   // the flat map that replaced Globe.svelte on 2026-11-26
   import Chart from './Chart.svelte'
 
   let { describe, run, base, cursor, crossings = [], context = null, event = null } = $props()
@@ -19,7 +19,7 @@
   })
   const of = (kind) => views.filter((v) => v.kind === kind && (kind === 'text' || kind === 'crossings' || (kind === 'map' ? run.fields?.[v.source] : run.series?.[v.source])))
   const counters = $derived(of('counter'))
-  const maps = $derived(of('map'))
+  const maps = $derived(of('map').filter((v) => run.fields?.[v.source]?.unit !== 'index'))   // an index frame is a lookup, not a picture
   // a scene needs the terrain frame beside the field it drapes
   const scenes = $derived(views.filter((v) => v.kind === 'scene' && run.fields?.[v.source] && run.fields?.terrain_elev_m))
   const globes = $derived(views.filter((v) => v.kind === 'globe'))
@@ -94,7 +94,8 @@
 {#if views.length}
   <section class="mb-10">
     <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-      <span class="mono text-sm font-medium">{describe.name}</span>
+      {#if describe.title}<span class="text-sm font-medium">{describe.title}</span>{/if}
+      <span class="mono text-sm {describe.title ? 'muted' : 'font-medium'}">{describe.name}</span>
       <span class="mono text-xs muted">{describe.kind}</span>
     </div>
     {#if describe.summary}<p class="mt-1 max-w-3xl text-sm muted">{describe.summary}</p>{/if}
@@ -156,7 +157,7 @@
     {#each globes as v (v.source)}
       <div class="mt-5 min-w-0">
         <div class="mb-1 text-sm">{v.title}{#if v.note} <span class="muted">· {v.note}</span>{/if}</div>
-        <Globe {run} {base} {cursor} source={v.source} />
+        <RegionMap {run} {base} {cursor} source={v.source} />
       </div>
     {/each}
   {/if}
