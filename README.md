@@ -1,7 +1,7 @@
 # esimv1-viewer
 
 Svelte 5 components that draw an esim run folder: field maps, charts, the timeline, the
-two 3D scenes, the globe, ledgers, the audit, the wiring diagram, and the figures a
+two 3D scenes, the flat map of countries, ledgers, the audit, the wiring diagram, and the figures a
 project README can embed.
 
 A run folder is a set of files (`run.json`, `describe.json`, `log.jsonl`, `fields/`); the
